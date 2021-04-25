@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 
 import check_phone
-import send_message
+
 
 app = Flask(__name__)
 
@@ -14,10 +14,11 @@ def home():
         # check for phone correctness
         phone_check = check_phone.Check_phone(phone)
         if phone_check:
-            context = {'user_name' : user, 'phone_number' : phone}
-            # send message to the VK
-            send_message.Send_message(context)
-            print(context)
+            context = {'Name' : user, 'Phone' : phone}
+            # save data in a file
+            data_file = open('users_info.txt', 'a')
+            data_file.write(f'{context}\n')
+            data_file.close()
         return render_template('index.html')
     else:
         return render_template('index.html')
